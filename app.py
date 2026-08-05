@@ -4,6 +4,7 @@ import streamlit as st
 
 # Step 1: Establish the connection — bring the logic layer into the UI.
 from pawpal_system import Owner, Pet, Task, Scheduler
+from ai_care_assistant import CareAgent
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -15,9 +16,7 @@ Welcome to PawPal+. .
 """
 )
 
-# Step 2: Manage the application "memory".
-# Streamlit re-runs this script top-to-bottom on every interaction, so we keep
-# a single Owner instance in st.session_state instead of rebuilding it each run.
+
 if "owner" not in st.session_state:
     st.session_state.owner = Owner(name="Jordan")
 
@@ -84,8 +83,7 @@ with col5:
     recurring = st.selectbox("Repeats", ["none", "daily", "weekly"])
 
 if st.button("Add task"):
-    # Pet.add_task handles the data; the UI updates because Streamlit re-runs
-    # and reads the now-updated object out of session_state.
+    
     selected_pet.add_task(
         Task(
             title=task_title,
@@ -125,6 +123,61 @@ if filtered:
     )
 else:
     st.info("No tasks match the current filters.")
+
+st.divider()
+
+# --- Step 3c: AI Care Assistant (RAG + agentic plan/act/check) -----------
+# This is the Module 3 advanced AI feature: it retrieves grounded pet-care
+# guidelines (RAG), proposes candidate tasks, runs them through the real
+# Scheduler to check whether they fit, and revises itself up to a few times
+# before handing suggestions to the owner for a final human decision.
+st.subheader("🤖 AI Care Assistant")
+st.caption(
+    "Retrieves relevant care guidelines, drafts new tasks grounded in them, "
+    "then checks the draft against your real schedule before suggesting it."
+)
+
+if "care_agent" not in st.session_state:
+    st.session_state.care_agent = CareAgent()
+
+ai_pet_label = st.selectbox("Suggest tasks for which pet?", pet_labels, key="ai_pet_select")
+ai_pet = owner.pets[int(ai_pet_label.split(":")[0])]
+
+if st.button("Suggest care tasks with AI"):
+    with st.spinner("Retrieving guidelines and drafting a plan..."):
+        st.session_state.ai_result = st.session_state.care_agent.suggest_tasks(ai_pet, owner)
+    st.session_state.ai_result_pet_name = ai_pet.name
+
+ai_result = st.session_state.get("ai_result")
+if ai_result is not None and st.session_state.get("ai_result_pet_name") == ai_pet.name:
+    mode = "live model call" if ai_result.used_llm else "offline knowledge-base fallback (no API key detected)"
+    st.info(f"Mode: {mode}  •  Confidence: {ai_result.confidence:.2f}  •  Iterations: {ai_result.iterations}")
+
+    with st.expander("Retrieved care guidelines (RAG context)"):
+        for entry in ai_result.retrieved_context:
+            st.markdown(f"- **{entry['category']}**: {entry['text']}")
+
+    with st.expander("Agent reasoning trace (plan → act → check → revise)"):
+        for step in ai_result.trace:
+            st.markdown(f"`{step.stage}` — {step.message}")
+
+    if ai_result.suggested_tasks:
+        st.write("Suggested tasks — review and choose which to add:")
+        chosen = []
+        for i, task in enumerate(ai_result.suggested_tasks):
+            if st.checkbox(
+                f"{task.title} — {task.duration_minutes} min, {task.priority} priority",
+                value=True,
+                key=f"ai_suggestion_{i}",
+            ):
+                chosen.append(task)
+        if st.button("Add selected suggestions to this pet"):
+            for task in chosen:
+                ai_pet.add_task(task)
+            st.success(f"Added {len(chosen)} AI-suggested task(s) to {ai_pet.name}.")
+            st.session_state.ai_result = None
+    else:
+        st.warning("The agent couldn't produce any valid suggestions this time.")
 
 st.divider()
 
