@@ -1,0 +1,86 @@
+[
+  {
+    "id": "dog-walk-01",
+    "species": "dog",
+    "category": "exercise",
+    "text": "Adult dogs generally need 20-60 minutes of walking or active play per day, split across 1-3 sessions, to stay physically and mentally healthy.",
+    "tags": ["walk", "exercise", "daily"]
+  },
+  {
+    "id": "dog-feed-01",
+    "species": "dog",
+    "category": "feeding",
+    "text": "Most adult dogs do well on two measured meals a day, roughly 10-15 minutes each including cleanup, at consistent times to support digestion.",
+    "tags": ["feeding", "meal", "daily"]
+  },
+  {
+    "id": "dog-groom-01",
+    "species": "dog",
+    "category": "grooming",
+    "text": "Brushing a dog 2-3 times a week for about 10 minutes reduces shedding and matting; nail trims are typically needed every 2-4 weeks.",
+    "tags": ["grooming", "brush", "weekly"]
+  },
+  {
+    "id": "dog-enrich-01",
+    "species": "dog",
+    "category": "enrichment",
+    "text": "Short training or puzzle-toy sessions of 10-15 minutes a day give dogs mental stimulation that tires them out as much as physical exercise.",
+    "tags": ["enrichment", "training", "daily"]
+  },
+  {
+    "id": "cat-litter-01",
+    "species": "cat",
+    "category": "hygiene",
+    "text": "Litter boxes should be scooped once a day, a 5-10 minute task, to prevent odor buildup and litter-box avoidance.",
+    "tags": ["litter", "hygiene", "daily"]
+  },
+  {
+    "id": "cat-feed-01",
+    "species": "cat",
+    "category": "feeding",
+    "text": "Cats typically do best with 2-4 small measured meals a day, each taking about 5-10 minutes to prepare and serve.",
+    "tags": ["feeding", "meal", "daily"]
+  },
+  {
+    "id": "cat-play-01",
+    "species": "cat",
+    "category": "enrichment",
+    "text": "Interactive play with a wand toy for 10-20 minutes a day satisfies a cat's hunting instinct and reduces destructive behavior.",
+    "tags": ["play", "enrichment", "daily"]
+  },
+  {
+    "id": "cat-groom-01",
+    "species": "cat",
+    "category": "grooming",
+    "text": "Weekly brushing sessions of about 10 minutes help control shedding and hairballs, especially for long-haired cats.",
+    "tags": ["grooming", "brush", "weekly"]
+  },
+  {
+    "id": "other-check-01",
+    "species": "other",
+    "category": "health",
+    "text": "For small mammals, birds, and reptiles, a brief 5-10 minute daily check of food, water, and habitat conditions catches problems early.",
+    "tags": ["health", "check", "daily"]
+  },
+  {
+    "id": "other-enrich-01",
+    "species": "other",
+    "category": "enrichment",
+    "text": "Rotating toys or habitat enrichment items every few days for about 10 minutes keeps small pets and exotics from becoming bored or stressed.",
+    "tags": ["enrichment", "habitat", "weekly"]
+  },
+  {
+    "id": "general-meds-01",
+    "species": "any",
+    "category": "medication",
+    "text": "Medication or supplement administration should happen at the same time daily, usually 5 minutes, so owners can track missed doses easily.",
+    "tags": ["medication", "health", "daily"]
+  },
+  {
+    "id": "general-vet-01",
+    "species": "any",
+    "category": "health",
+    "text": "Routine wellness checks are recommended roughly every 6-12 months; a reminder task the week before an appointment reduces no-shows.",
+    "tags": ["vet", "health", "reminder"]
+  }
+]
